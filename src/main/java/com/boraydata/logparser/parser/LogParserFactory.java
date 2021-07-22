@@ -31,7 +31,7 @@ public class LogParserFactory {
         }
         return null;
     }
-    // 适合传入 日志的 输出表达式（Pattern） 来创建可以解析自定义的 Log4j Parser以及Log4j2 Parser
+    // 适合传入 日志的 输出表达式（Pattern） 来创建可以解析自定义的 Log4j Parser以及Log4j2 Parser 以及符合 Groke 语法的自定解析器
     public static LogParser create(ParserType parserType,String pattern){
         if (parserType.equals(ParserType.Log4j)){
             GrokCompiler grokCompiler = GrokCompiler.newInstance();
@@ -40,6 +40,14 @@ public class LogParserFactory {
             grokCompiler.registerPatternFromClasspath("/patterns/java");
             Grok grok = grokCompiler.compile(PatternUtils.compile(pattern));
             Log4jParser parser = new Log4jParser();
+            parser.parser(grok);
+            return parser;
+        }else if(parserType.equals(ParserType.CustomizeLog)){
+            GrokCompiler grokCompiler = GrokCompiler.newInstance();
+            // 为了支持 Groke 语法 默认加载 所有的配置
+            grokCompiler.registerAllPatterns();
+            Grok grok = grokCompiler.compile(pattern);
+            AbstractMatch parser = new AbstractMatch();
             parser.parser(grok);
             return parser;
         }

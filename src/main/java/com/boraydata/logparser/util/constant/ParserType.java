@@ -7,6 +7,7 @@ package com.boraydata.logparser.util.constant;
 public enum ParserType {
     Syslog,
     ApacheLog,
-    Log4j;
+    Log4j,
+    CustomizeLog;
 
 }

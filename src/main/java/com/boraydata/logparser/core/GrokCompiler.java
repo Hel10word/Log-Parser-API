@@ -65,6 +65,18 @@ public class GrokCompiler implements Serializable {
   public void registerDefaultPatterns() {
     registerPatternFromClasspath("/patterns/patterns");
   }
+// 加载所有的 配置文件
+  public void registerAllPatterns() {
+    registerPatternFromClasspath("/patterns/java");
+    registerPatternFromClasspath("/patterns/firewalls");
+    registerPatternFromClasspath("/patterns/haproxy");
+    registerPatternFromClasspath("/patterns/linux-syslog");
+    registerPatternFromClasspath("/patterns/nagios");
+    registerPatternFromClasspath("/patterns/patterns");
+    registerPatternFromClasspath("/patterns/postfix");
+    registerPatternFromClasspath("/patterns/ruby");
+  }
+
 
   public void registerPatternFromClasspath(String path) throws GrokException {
     registerPatternFromClasspath(path, StandardCharsets.UTF_8);
