@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Copyright 2018 Boray Data Co. Ltd.  All rights reserved. -->
+
+<!-- "status" here refers to the log4j internal logging level.
+     Refer to the root logger's "level" property to set the RapidsDB log level. -->
+<Configuration status="warn" monitorInterval="60">
+
+    <Properties>
+        <Property name="rootLoggingLevel">info</Property>
+
+        <Property name="filename">./logs/web-server.log</Property>
+        <Property name="securityFile">./logs/web-security.log</Property>
+        <Property name="rollingFilePattern">./logs/web-server-%i.log</Property>
+
+        <!--
+            The pattern that log messages are written out in.
+            Ref: https://logging.apache.org/log4j/2.x/manual/layouts.html#PatternLayout
+            %d{ISO8601} = yyyy-mm-ddThh:mm:ss,mmm
+            [%-22c{2}]  = left justify with 22 character width and print the class name ignoring the
+                          first two components of the package name. i.e. the "com.rapidsdata" part.
+            %-5p:       = Left justify with width 5 and print the priority (WARN, INFO, DEBUG, etc).
+            %m%n        = print the message associated with the log event, followed by the line separator.
+        -->
+        <Property name="consolePattern" >%d{ISO8601} %style{%marker}{red} [%-22c{2}] %t %-5p: %m%n</Property>
+        <Property name="filePattern"    >%d{ISO8601} %style{%marker}{red} [%-22c{2}] %t %-5p: %m%n</Property>
+        <Property name="securityPattern">%d{ISO8601} : %m%n</Property>
+
+    </Properties>
+
+    <Appenders>
+        <!-- Where to log to. Must be referenced by a logger below. -->
+
+        <!-- Log to the console -->
+        <Console
+                name="RouterConsole"
+                target="SYSTEM_OUT">
+            <PatternLayout pattern="${consolePattern}"/>
+        </Console>
+
+        <!-- and log to disk -->
+        <RollingFile
+                name="RouterLogFile"
+                fileName="${filename}"
+                filePattern="${rollingFilePattern}"
+                append="true">
+            <PatternLayout pattern="${filePattern}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="5MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="1"/>
+        </RollingFile>
+
+        <File
+                name="RouterSecurity"
+                fileName="${securityFile}"
+                append="true">>
+            <PatternLayout pattern="${securityPattern}"/>
+        </File>
+
+    </Appenders>
+
+    <Loggers>
+        <!--
+            Define loggers for packages that we wish to use a different logging level for.
+            This is typically because these packages are noisy and we want to suppress
+            their annoying log messages unless they are really important.
+        -->
+        <Logger name="com.zaxxer.hikari" level="warn" />
+        <Logger name="com.boraydata"     level="info"  />
+        <!--过滤掉spring和mybatis的一些无用的DEBUG信息-->
+        <logger name="org.mybatis" level="info" />
+        <Logger name="org.springframework" level="info" />
+        <!-- The root logger, the main logging level and which appenders to log to. -->
+        <Root level="all">
+
+            <!-- Let's accept all log messages to start with, then filter them down.
+                 We will accept any message that has the "SECURE" marker on it, or
+                 any log message that meets the minimum log level given in
+                 ${rootLoggingLevel}.
+             -->
+            <Filters>
+                <ThresholdFilter level="${rootLoggingLevel}" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+
+            <AppenderRef ref="RouterConsole"/>
+            <AppenderRef ref="RouterLogFile"/>
+        </Root>
+
+        <Logger name="routerSecurity"     level="all">
+            <AppenderRef ref="RouterSecurity"/>
+        </Logger>
+    </Loggers>
+
+</Configuration>

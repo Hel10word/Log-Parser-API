@@ -1,0 +1,10 @@
+写一个Log Parser的API，目标是可以解释相关的log文件，例如syslog，log4j等等。 需要解析以下3种的log文件，1和2是优先
+
+syslog
+apache log
+log4j
+一个syslog的文件已放在80.71:/home/zhangbufan中，你可用于测试
+
+要求：功能和性能
+
+查看得知  syslog 为 RFC3164协议
