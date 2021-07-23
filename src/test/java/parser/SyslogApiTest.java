@@ -38,9 +38,9 @@ public class SyslogApiTest {
         System.out.println("===============  AllKay  ==============\n");
         System.out.println(maps);
 
-//        Map<String, Object> map = parser.toMap(sysLog, argsArray);
-//        System.out.println("===============  FilterKay  ==============\n");
-//        System.out.println(map);
+        Map<String, Object> map = parser.toMap(sysLog, argsArray);
+        System.out.println("===============  FilterKay  ==============\n");
+        System.out.println(map);
     }
 
     /** SyslogEntity { timestamp、hostname、program、pid、message }

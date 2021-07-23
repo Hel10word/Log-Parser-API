@@ -53,11 +53,13 @@
             <version>3.7</version>
         </dependency>
         <!--    格式化为 JSON 输出    -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.9.0</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.fasterxml.jackson.core</groupId>-->
+<!--            <artifactId>jackson-databind</artifactId>-->
+<!--            <version>2.9.0</version>-->
+<!--        </dependency>-->
+<!--    后来改为 手动输出 Json    -->
+
 <!--    用于测试   简化实习类代码   -->
         <dependency>
             <groupId>org.projectlombok</groupId>

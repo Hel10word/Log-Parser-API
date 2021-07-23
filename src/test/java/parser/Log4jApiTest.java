@@ -5,10 +5,7 @@ import com.boraydata.logparser.util.constant.PatternConstant;
 import com.boraydata.logparser.parser.LogParser;
 import com.boraydata.logparser.parser.LogParserFactory;
 import entity.Log4jEntity;
-import entity.SyslogEntity;
 import org.junit.jupiter.api.Test;
-
-import java.util.Map;
 
 /**
  * @author bufan
@@ -61,7 +58,7 @@ public class Log4jApiTest {
         System.out.println("----------------------------------------------  ToPOJO");
         LogParser parser = LogParserFactory.create(ParserType.Log4j,Log4j2Patter_One);
         Log4jEntity log4jEntity = parser.toEntity(Log4j2Str_One, Log4jEntity.class);
-        System.out.println("===============  SyslogEntity  ==============\n");
+        System.out.println("===============  Log4jEntity  ==============\n");
         System.out.println(log4jEntity.toString());
     }
 

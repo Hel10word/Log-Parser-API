@@ -1,7 +1,7 @@
 package com.boraydata.logparser.core;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.boraydata.logparser.util.MatchUtils;
 import com.boraydata.logparser.exception.GrokException;
 
 import java.lang.reflect.Field;
@@ -9,7 +9,6 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 
-import static java.lang.String.format;
 
 /**
  * {@code Match} is a representation in {@code Grok} world of your log.
@@ -181,21 +180,6 @@ public class Match {
    * @date: 2021/7/14 18:17
    */
 
-  private static ObjectMapper objectMapper = new ObjectMapper();
-  /** 将 Map 结构数据 转为 JSON 输出
-   * @描述:
-   * @author: 凡
-   * @date: 2021/7/13 11:33
-   */
-  private static String MapToJson(Map<String, Object> map){
-    try {
-      String s = objectMapper.writeValueAsString(map);
-      return s;
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    return null;
-  }
 
   /** 数据返回为 Map
    * @描述: 这儿实际是 使用了大佬的方法  后续方法皆是 将 Map 对象  转为 JSON 或 POJO
@@ -231,7 +215,7 @@ public class Match {
    * @date: 2021/7/13 11:28
    */
   public String toJson(){
-    return MapToJson(capture(true));
+    return MatchUtils.mapToJson(capture(true));
   }
 
   /** 筛选出指定键 返回JSON
@@ -240,7 +224,7 @@ public class Match {
    * @date: 2021/7/13 11:27
    */
   public String toJson(String[] Keys){
-    return MapToJson(toMap(Keys));
+    return MatchUtils.mapToJson(toMap(Keys));
   }
 
   /** 根据传入的 Entity 封装对象 返回

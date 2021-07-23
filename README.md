@@ -77,7 +77,8 @@ System.out.println(json);
 out：
 
 ```json
-{"timestamp":"Jul  5 16:00:57","MONTH":"Jul","MONTHDAY":"5","TIME":"16:00:57","HOUR":"16","MINUTE":"00","SECOND":"57","hostname":"boray01","IPORHOST":"boray01","program":"conmon","pid":"15913","message":" cluster 2021-07-05T16:00:56.793298+0000 mgr.boray01.eamgxr"}
+{"hostname":"boray01","pid":"15913","program":"conmon","message":" cluster 2021-07-05T16:00:56.793298+0000 mgr.boray01.eamgxr","timestamp":"Jul  5 16:00:57"}
+
 {"timestamp":"Jul  5 16:00:57","hostname":"boray01","pid":"15913","message":" cluster 2021-07-05T16:00:56.793298+0000 mgr.boray01.eamgxr"}
 ```
 
@@ -101,7 +102,7 @@ System.out.println(log4jEntity.toString());
 out：
 
 ```json
-{timestamp=2021-07-14 13:27:05, YEAR=2021, MONTHNUM=07, MONTHDAY=14, HOUR=13, MINUTE=27, SECOND=05, ISO8601_TIMEZONE=null, logleve=INFO, classname=com.zbf.log.Main, message=log4j2}
+{classname=com.zbf.log.Main, logleve=INFO, message=log4j2, timestamp=2021-07-14 13:27:05}
 
 Log4jEntity(classname=com.zbf.log.Main, logleve=INFO, message=log4j2, timestamp=2021-07-14 13:27:05)
 ```
@@ -151,7 +152,7 @@ Log4jEntity(classname=com.zbf.log.Main, logleve=INFO, message=log4j2, timestamp=
 
 
 
-- 由于是先将 Matcher 中的匹配结果取出存为 Map 结构，然后 toJson（基与`jackson-databind`依赖）、toEntity（通过反射的方式，创建传入的POJO，然后将值写入并返回）这两种都是基于先有了Map数据后的二次输出格式。**因此转换效率为：toMap() > toEntity() > toJson()**
+- 由于是先将 Matcher 中的匹配结果取出存为 Map 结构，然后 toJson（~~基与`jackson-databind`依赖~~  手动遍历Map，添加 `{ }` 与 `:` 后返回）、toEntity（通过反射的方式，创建传入的POJO，然后遍历Map将值写入并返回）这两种都是基于先有了Map数据后的二次输出格式。**因此转换效率为：toMap()  > toJson() >  toEntity()**
 
 # Other
 

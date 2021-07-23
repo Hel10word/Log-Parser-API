@@ -54,7 +54,7 @@ public class ApacheApiTest {
     public void outPOJO(){
         System.out.println("----------------------------------------------  ToPOJO");
         ApacheEntity apacheEntity = parser.toEntity(apacheLog, ApacheEntity.class);
-        System.out.println("===============  SyslogEntity  ==============\n");
+        System.out.println("===============  ApacheEntity  ==============\n");
         System.out.println(apacheEntity.toString());
     }
 }

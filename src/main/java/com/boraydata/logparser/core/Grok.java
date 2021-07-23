@@ -69,9 +69,9 @@ public class Grok implements Serializable {
 //    this.groupTypes = Converter.getGroupTypes(namedRegexCollection.values());
 //    this.converters = Converter.getConverters(namedRegexCollection.values(), defaultTimeZone);
     this.grokPatternDefinition = patternDefinitions;
-    System.out.println("this.namedRegex = "+namedRegex);
-    System.out.println("this.namedRegexCollection = "+namedRegexCollection);
-    System.out.println("grokPatternDefinition = "+patternDefinitions);
+//    System.out.println("this.namedRegex = "+namedRegex);
+//    System.out.println("this.namedRegexCollection = "+namedRegexCollection);
+//    System.out.println("grokPatternDefinition = "+patternDefinitions);
   }
 
   public String getSaved_pattern() {
