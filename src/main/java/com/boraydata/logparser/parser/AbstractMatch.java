@@ -2,6 +2,8 @@ package com.boraydata.logparser.parser;
 
 import com.boraydata.logparser.core.Match;
 import com.boraydata.logparser.core.Grok;
+
+import java.time.LocalDateTime;
 import java.util.Map;
 
 /** 用来  将 Grok 的 转换结果 Match 对象 转换为不同 格式
@@ -26,9 +28,7 @@ public class AbstractMatch implements LogParser {
      * 通过 grok.match() 将用户传入的字符串 转为 可以被我们的多元化输出的 Match 对象
      */
     private Match parseLog(String content) {
-
-        if(this.match == null||this.match.isNull())
-            this.match = this.grok.match(content);
+        this.match = this.grok.match(content);
         return this.match;
     }
 
@@ -86,4 +86,16 @@ public class AbstractMatch implements LogParser {
     public <T> T toEntity(String content, Class<T> c) {
         return parseLog(content).toEntity(c);
     }
+
+    @Override
+    public LocalDateTime toLocalDateTime(String time) {
+        return LocalDateTime.now();
+    }
+
+    @Override
+    public LocalDateTime toLocalDateTime(String time, long year) {
+        return LocalDateTime.now();
+    }
+
+
 }

@@ -126,6 +126,7 @@ public class FileParserTest_ForThreadPool {
         }
         long end = System.currentTimeMillis();
         System.out.println("Total time spent  " + (end - start));
+//        System.out.println(allResult.size());
         // 清空 List 中解析 的日志
 //        allResult.clear();
         // 调用 GC 来释放空间

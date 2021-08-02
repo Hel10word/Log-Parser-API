@@ -142,17 +142,26 @@ Log4jEntity(classname=com.zbf.log.Main, logleve=INFO, message=log4j2, timestamp=
 - `String[] args = new String[]{"program","pid"};`
 - `Entity.class 中包含的字段: {String program、String pid }`
 
-| 方法名                      | 传入参数                 | 输出结果                                                  | 结果类型              |
-| --------------------------- | ------------------------ | --------------------------------------------------------- | --------------------- |
-| `toJson(String)`            | `logStr`                 | `{"hostname":"boray01","program":"conmon","pid":"15913"}` | `String`              |
-| `toJson(String, String[])`  | `logStr` ,`args`         | `{"program":"conmon","pid":"15913"}`                      | `String`              |
-| `toMap(String)`             | `logStr`                 | `{hostname=boray01, program=conmon, pid=15913}`           | `Map<String, Object>` |
-| `toMap(String, String[])`   | `logStr` ,`args`         | `{program=conmon, pid=15913}`                             | `Map<String, Object>` |
-| `toEntity(String,Class<T>)` | `logStr` ,`Entity.class` | `SyslogEntity(program=conmon, pid=15913)`                 | T                     |
+| 方法名                         | 传入参数                     | 输出结果                                                  | 结果类型              |
+| ------------------------------ | ---------------------------- | --------------------------------------------------------- | --------------------- |
+| `toJson(String)`               | `logStr`                     | `{"hostname":"boray01","program":"conmon","pid":"15913"}` | `String`              |
+| `toJson(String, String[])`     | `logStr` ,`args`             | `{"program":"conmon","pid":"15913"}`                      | `String`              |
+| `toMap(String)`                | `logStr`                     | `{hostname=boray01, program=conmon, pid=15913}`           | `Map<String, Object>` |
+| `toMap(String, String[])`      | `logStr` ,`args`             | `{program=conmon, pid=15913}`                             | `Map<String, Object>` |
+| `toEntity(String,Class<T>)`    | `logStr` ,`Entity.class`     | `SyslogEntity(program=conmon, pid=15913)`                 | T                     |
+| `toLocalDateTime(String)`      | `17/Nov/2020:20:33:13 +0800` | `2020-11-17T20:33:13`                                     | `LocalDateTime`       |
+| `toLocalDateTime(String,long)` | `Jul 5 16:00:20`,`2021`      | `2021-07-05T16:00:20`                                     | `LocalDateTime`       |
+
+
+
+- `toLocalDateTime()`：由于 SysLog 中的时间，不是标准时间，因此提供此方法作为格式化输出，传入SysLog格式的时间与年份，将解析成
+ Java 8 中的`LocalDateTime` 对象，同理 Apache Log 也有对应的功能，只是Apache Log 时间中包含了年份，因此可省去第二个参数，其他日志没有改需求，默认返回当先系统时间。
 
 
 
 - 由于是先将 Matcher 中的匹配结果取出存为 Map 结构，然后 toJson（~~基与`jackson-databind`依赖~~  手动遍历Map，添加 `{ }` 与 `:` 后返回）、toEntity（通过反射的方式，创建传入的POJO，然后遍历Map将值写入并返回）这两种都是基于先有了Map数据后的二次输出格式。**因此转换效率为：toMap()  > toJson() >  toEntity()**
+
+
 
 # Other
 

@@ -73,26 +73,6 @@ public class Match {
   }
 
   /**
-   * Retrurn the single line of log.
-   *
-   * @return the single line of log
-   */
-  public CharSequence getSubject() {
-    return subject;
-  }
-
-  /**
-   * Match to the <tt>subject</tt> the <tt>regex</tt> and save the matched element into a map.
-   *
-   * Multiple values for the same key are stored as list.
-   *
-   */
-  public Map<String, Object> capture() {
-    return capture(false);
-  }
-
-
-  /**
    * Private implementation of captureFlattened and capture.
    * @param flattened will it flatten values.
    * @return the matched elements.
@@ -103,22 +83,22 @@ public class Match {
    * @author: bufan
    * @date: 2021/7/15 22:35
    */
-  private Map<String, Object> capture(boolean flattened ) throws GrokException {
-    if (match == null) {
+  public Map<String, Object> capture() throws GrokException {
+    if (match == null||isNull()) {
       return Collections.emptyMap();
     }
 
-    // {name0=Jul  5 16:00:20, name1=Jul, name2=5, name3=16:00:20, name4=16, name5=00, name6=20, name7=boray01, name8=boray01}
     Map<String, String> mappedw = GrokUtils.namedGroups(this.match, this.grok.namedGroups);
-    // {name0=timestamp,name7=hostname}
     Map<String, String> namedRegexCollection = this.grok.getNamedRegexCollection();
     Map<String,Object> map = new ConcurrentHashMap<>();
-//    System.out.println("mappedw : "+mappedw);
-//    System.out.println("namedRegexCollection : "+namedRegexCollection);
-    for (String key : namedRegexCollection.keySet())
-      map.put(namedRegexCollection.get(key),mappedw.get(key));
-    Collections.unmodifiableMap(map);
-    return map;
+    if(namedRegexCollection.size()<=0||mappedw.size()<=0)
+      return Collections.emptyMap();
+    for (String key : namedRegexCollection.keySet()){
+      if(namedRegexCollection.get(key)!=null&&mappedw.get(key)!=null)
+        map.put(namedRegexCollection.get(key),mappedw.get(key));
+    }
+
+    return Collections.unmodifiableMap(map);
   }
 
   /**
@@ -187,7 +167,7 @@ public class Match {
    * @date: 2021/7/13 11:28
    */
   public Map<String, Object> toMap() throws GrokException {
-    return capture(true);
+    return capture();
   }
 
   /** 筛选出指定键值 返回 Map
@@ -197,7 +177,7 @@ public class Match {
    * @return
    */
   public Map<String, Object> toMap(String[] Keys){
-    Map<String, Object> matchMap = capture(true);
+    Map<String, Object> matchMap = capture();
     Map<String, Object> argMap = new LinkedHashMap<>();
     for (String key:Keys)
       argMap.put(key,
@@ -215,7 +195,7 @@ public class Match {
    * @date: 2021/7/13 11:28
    */
   public String toJson(){
-    return MatchUtils.mapToJson(capture(true));
+    return MatchUtils.mapToJson(capture());
   }
 
   /** 筛选出指定键 返回JSON
@@ -234,7 +214,7 @@ public class Match {
    */
   public <T> T toEntity(Class<T> c){
     try {
-      Map<String, Object> map = capture(true);
+      Map<String, Object> map = capture();
       T t = c.newInstance();
       for (Field f:c.getDeclaredFields()){
         f.setAccessible(true);
